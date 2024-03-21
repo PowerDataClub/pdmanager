@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.ReportInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="report_name" property="reportName" jdbcType="VARCHAR" />
+    <result column="workbook" property="workbook" jdbcType="VARCHAR" />
+    <result column="report_url" property="reportUrl" jdbcType="VARCHAR" />
+    <result column="report_path" property="reportPath" jdbcType="VARCHAR" />
+    <result column="tableau_url" property="tableauUrl" jdbcType="VARCHAR" />
+    <result column="tableau_detail_url" property="tableauDetailUrl" jdbcType="VARCHAR" />
+    <result column="dispatch_path" property="dispatchPath" jdbcType="VARCHAR" />
+    <result column="visit_num" property="visitNum" jdbcType="INTEGER" />
+    <result column="role_num" property="roleNum" jdbcType="INTEGER" />
+    <result column="user_num" property="userNum" jdbcType="INTEGER" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="lineage_id" property="lineageId" jdbcType="INTEGER" />
+    <result column="is_report" property="isReport" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="demander" property="demander" jdbcType="VARCHAR" />
+    <result column="report_maker" property="reportMaker" jdbcType="VARCHAR" />
+    <result column="report_online_time" property="reportOnlineTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, report_name, workbook, report_url, report_path, tableau_url, tableau_detail_url, 
+    dispatch_path, visit_num, role_num, user_num, create_user, lineage_id, is_report, 
+    create_time, update_time, demander, report_maker, report_online_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into report_info (report_name, workbook, report_url, 
+      report_path, tableau_url, tableau_detail_url, 
+      dispatch_path, visit_num, role_num, 
+      user_num, create_user, lineage_id, 
+      is_report, create_time, update_time, 
+      demander, report_maker, report_online_time
+      )
+    values (#{reportName,jdbcType=VARCHAR}, #{workbook,jdbcType=VARCHAR}, #{reportUrl,jdbcType=VARCHAR}, 
+      #{reportPath,jdbcType=VARCHAR}, #{tableauUrl,jdbcType=VARCHAR}, #{tableauDetailUrl,jdbcType=VARCHAR}, 
+      #{dispatchPath,jdbcType=VARCHAR}, #{visitNum,jdbcType=INTEGER}, #{roleNum,jdbcType=INTEGER}, 
+      #{userNum,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, #{lineageId,jdbcType=INTEGER}, 
+      #{isReport,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{demander,jdbcType=VARCHAR}, #{reportMaker,jdbcType=VARCHAR}, #{reportOnlineTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into report_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reportName != null" >
+        report_name,
+      </if>
+      <if test="workbook != null" >
+        workbook,
+      </if>
+      <if test="reportUrl != null" >
+        report_url,
+      </if>
+      <if test="reportPath != null" >
+        report_path,
+      </if>
+      <if test="tableauUrl != null" >
+        tableau_url,
+      </if>
+      <if test="tableauDetailUrl != null" >
+        tableau_detail_url,
+      </if>
+      <if test="dispatchPath != null" >
+        dispatch_path,
+      </if>
+      <if test="visitNum != null" >
+        visit_num,
+      </if>
+      <if test="roleNum != null" >
+        role_num,
+      </if>
+      <if test="userNum != null" >
+        user_num,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="lineageId != null" >
+        lineage_id,
+      </if>
+      <if test="isReport != null" >
+        is_report,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="demander != null" >
+        demander,
+      </if>
+      <if test="reportMaker != null" >
+        report_maker,
+      </if>
+      <if test="reportOnlineTime != null" >
+        report_online_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reportName != null" >
+        #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="workbook != null" >
+        #{workbook,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUrl != null" >
+        #{reportUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPath != null" >
+        #{reportPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tableauUrl != null" >
+        #{tableauUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tableauDetailUrl != null" >
+        #{tableauDetailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchPath != null" >
+        #{dispatchPath,jdbcType=VARCHAR},
+      </if>
+      <if test="visitNum != null" >
+        #{visitNum,jdbcType=INTEGER},
+      </if>
+      <if test="roleNum != null" >
+        #{roleNum,jdbcType=INTEGER},
+      </if>
+      <if test="userNum != null" >
+        #{userNum,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lineageId != null" >
+        #{lineageId,jdbcType=INTEGER},
+      </if>
+      <if test="isReport != null" >
+        #{isReport,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demander != null" >
+        #{demander,jdbcType=VARCHAR},
+      </if>
+      <if test="reportMaker != null" >
+        #{reportMaker,jdbcType=VARCHAR},
+      </if>
+      <if test="reportOnlineTime != null" >
+        #{reportOnlineTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    update report_info
+    <set >
+      <if test="reportName != null" >
+        report_name = #{reportName,jdbcType=VARCHAR},
+      </if>
+      <if test="workbook != null" >
+        workbook = #{workbook,jdbcType=VARCHAR},
+      </if>
+      <if test="reportUrl != null" >
+        report_url = #{reportUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPath != null" >
+        report_path = #{reportPath,jdbcType=VARCHAR},
+      </if>
+      <if test="tableauUrl != null" >
+        tableau_url = #{tableauUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="tableauDetailUrl != null" >
+        tableau_detail_url = #{tableauDetailUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dispatchPath != null" >
+        dispatch_path = #{dispatchPath,jdbcType=VARCHAR},
+      </if>
+      <if test="visitNum != null" >
+        visit_num = #{visitNum,jdbcType=INTEGER},
+      </if>
+      <if test="roleNum != null" >
+        role_num = #{roleNum,jdbcType=INTEGER},
+      </if>
+      <if test="userNum != null" >
+        user_num = #{userNum,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="lineageId != null" >
+        lineage_id = #{lineageId,jdbcType=INTEGER},
+      </if>
+      <if test="isReport != null" >
+        is_report = #{isReport,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="demander != null" >
+        demander = #{demander,jdbcType=VARCHAR},
+      </if>
+      <if test="reportMaker != null" >
+        report_maker = #{reportMaker,jdbcType=VARCHAR},
+      </if>
+      <if test="reportOnlineTime != null" >
+        report_online_time = #{reportOnlineTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    update report_info
+    set report_name = #{reportName,jdbcType=VARCHAR},
+      workbook = #{workbook,jdbcType=VARCHAR},
+      report_url = #{reportUrl,jdbcType=VARCHAR},
+      report_path = #{reportPath,jdbcType=VARCHAR},
+      tableau_url = #{tableauUrl,jdbcType=VARCHAR},
+      tableau_detail_url = #{tableauDetailUrl,jdbcType=VARCHAR},
+      dispatch_path = #{dispatchPath,jdbcType=VARCHAR},
+      visit_num = #{visitNum,jdbcType=INTEGER},
+      role_num = #{roleNum,jdbcType=INTEGER},
+      user_num = #{userNum,jdbcType=INTEGER},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      lineage_id = #{lineageId,jdbcType=INTEGER},
+      is_report = #{isReport,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      demander = #{demander,jdbcType=VARCHAR},
+      report_maker = #{reportMaker,jdbcType=VARCHAR},
+      report_online_time = #{reportOnlineTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+
+  <select id="findReportByReportInfo" resultType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    select * from report_info
+    <where>
+      <if test="report.reportName !=null and report.reportName != ''">
+        report_name = #{report.reportName}
+      </if>
+      <if test="report.reportPath !=null and report.reportPath != ''">
+        and report_path = #{report.reportPath}
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <select id="findReportByReportInfoFuzzy" resultType="com.metalineage.databus.manager.entity.metadata.ReportInfo" >
+    select * from report_info
+    <where>
+      <if test="report.reportName !=null and report.reportName != ''">
+        report_name like concat(concat('%',#{report.reportName}),'%')
+      </if>
+      <if test="report.reportPath !=null and report.reportPath != ''">
+        and report_path like concat(concat('%',#{report.reportPath}),'%')
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+
+  <select id="getVisitInfo" resultType="java.util.Map">
+    select menu_id as menuId,count(1) as visitNum from tab_visit_log group by 1
+  </select>
+
+
+
+  <select id="getRoleInfo3" resultType="java.util.Map">
+    select menu_id,max(path1) as path,  max(status) as status, count(role_name) as role_num, sum(user_num) as user_num from
+      (select m3.menu_id , concat_ws('/',m1.path,m2.path,m3.path) as path1, m3.status,  mru.role_name, mru.user_num
+       from sys_menu m3
+              left join sys_menu m2 on m3.parent_id = m2.menu_id
+              left join sys_menu m1 on m2.parent_id = m1.menu_id
+              left join
+            (select rm.menu_id ,rm.role_id ,r.role_name, count(u.user_id) as user_num from  sys_role_menu rm
+                                                                                              left join sys_role r on rm.role_id = r.role_id
+                                                                                              left join  sys_user_role ur on ur.role_id = r.role_id
+                                                                                              left join  sys_user u on u.user_id = ur.user_id
+             where u.status = 0 and u.del_flag = 0
+             group by rm.menu_id ,rm.role_id ,r.role_name) mru  on mru.menu_id = m3.menu_id
+       where m3.component = 'tableau/report/index' and m1.menu_id is not null and mru.role_name is not null)
+        t1 group by 1
+  </select>
+
+  <select id="getRoleInfo2" resultType="java.util.Map">
+    select menu_id,max(path1) as path,  max(status) as status, count(role_name) as role_num, sum(user_num) as user_num from
+      (select m3.menu_id , concat_ws('/',m2.path,m3.path) as path1, m3.status,  mru.role_name, mru.user_num
+       from sys_menu m3
+              left join sys_menu m2 on m3.parent_id = m2.menu_id
+              left join sys_menu m1 on m2.parent_id = m1.menu_id
+              left join
+            (select rm.menu_id ,rm.role_id ,r.role_name, count(u.user_id) as user_num from  sys_role_menu rm
+                                                                                              left join sys_role r on rm.role_id = r.role_id
+                                                                                              left join  sys_user_role ur on ur.role_id = r.role_id
+                                                                                              left join  sys_user u on u.user_id = ur.user_id
+             where u.status = 0 and u.del_flag = 0
+             group by rm.menu_id ,rm.role_id ,r.role_name) mru  on mru.menu_id = m3.menu_id
+       where m3.component = 'tableau/report/index' and m1.menu_id is null and mru.role_name is not null)
+        t1 group by 1
+  </select>
+  <select id="getUserAndRoleInfo" resultType="java.util.Map">
+    SELECT
+      rm.menu_id,
+      rm.role_id,
+      r.role_name,
+      u.user_id,
+      u.nick_name
+    FROM
+      sys_role_menu rm
+        LEFT JOIN sys_role r ON rm.role_id = r.role_id
+        LEFT JOIN sys_user_role ur ON ur.role_id = r.role_id
+        LEFT JOIN sys_user u ON u.user_id = ur.user_id
+    where rm.menu_id = #{menuId}
+  </select>
+
+
+
+  <select id="getUserInfoByMenuId" resultType="java.util.Map">
+    select demander,report_maker,report_online_time from tableau_dashboard_info where menu_id = #{menuId} limit 1;
+  </select>
+
+  <delete id="deleteAll">
+    delete from report_info;
+  </delete>
+</mapper>

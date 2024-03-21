@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.ManagerSysMenuHealthMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.SysMenuHealth" >
+    <id column="menu_id" property="menuId" jdbcType="BIGINT" />
+    <result column="is_health" property="isHealth" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    menu_id, is_health, menu_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_menu_health
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_menu_health
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.SysMenuHealth" >
+    insert into sys_menu_health (menu_id, is_health, menu_name
+      )
+    values (#{menuId,jdbcType=BIGINT}, #{isHealth,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.SysMenuHealth" >
+    insert into sys_menu_health
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="isHealth != null" >
+        is_health,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=BIGINT},
+      </if>
+      <if test="isHealth != null" >
+        #{isHealth,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.SysMenuHealth" >
+    update sys_menu_health
+    <set >
+      <if test="isHealth != null" >
+        is_health = #{isHealth,jdbcType=INTEGER},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.SysMenuHealth" >
+    update sys_menu_health
+    set is_health = #{isHealth,jdbcType=INTEGER},
+      menu_name = #{menuName,jdbcType=VARCHAR}
+    where menu_id = #{menuId,jdbcType=BIGINT}
+  </update>
+
+  <delete id="deleteAll">
+    delete from sys_menu_health;
+  </delete>
+</mapper>

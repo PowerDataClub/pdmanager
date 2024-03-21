@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.ManagerMetadataTableMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="db_name" property="dbName" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="db_table" property="dbTable" jdbcType="VARCHAR" />
+    <result column="db_type" property="dbType" jdbcType="VARCHAR" />
+    <result column="owner" property="owner" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="VARCHAR" />
+    <result column="is_dw" property="isDw" jdbcType="VARCHAR" />
+    <result column="dw_level" property="dwLevel" jdbcType="VARCHAR" />
+    <result column="lineage_id" property="lineageId" jdbcType="INTEGER" />
+    <result column="field_num" property="fieldNum" jdbcType="INTEGER" />
+    <result column="partition_type" property="partitionType" jdbcType="INTEGER" />
+    <result column="partition_count" property="partitionCount" jdbcType="INTEGER" />
+    <result column="partition_field" property="partitionField" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="extract_logic" property="extractLogic" jdbcType="VARCHAR" />
+    <result column="extract_time" property="extractTime" jdbcType="VARCHAR" />
+    <result column="busines_desc" property="businesDesc" jdbcType="VARCHAR" />
+    <result column="db_count" property="dbCount" jdbcType="BIGINT" />
+    <result column="file_location" property="fileLocation" jdbcType="VARCHAR" />
+    <result column="filesize" property="filesize" jdbcType="BIGINT" />
+    <result column="file_format" property="fileFormat" jdbcType="VARCHAR" />
+    <result column="file_compress" property="fileCompress" jdbcType="VARCHAR" />
+    <result column="file_count" property="fileCount" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, db_name, table_name, db_table, db_type, owner, priority, is_dw, dw_level, lineage_id, 
+    field_num, partition_type, partition_count, partition_field, create_time, update_time, 
+    note, comment, extract_logic, extract_time, busines_desc, db_count, file_location, 
+    filesize, file_format, file_compress, file_count
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from metadata_table
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from metadata_table
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_table (db_name, table_name, db_table, 
+      db_type, owner, priority, 
+      is_dw, dw_level, lineage_id, 
+      field_num, partition_type, partition_count, 
+      partition_field, create_time, update_time, 
+      note, comment, extract_logic, 
+      extract_time, busines_desc, db_count, 
+      file_location, filesize, file_format, 
+      file_compress, file_count)
+    values (#{dbName,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, #{dbTable,jdbcType=VARCHAR}, 
+      #{dbType,jdbcType=VARCHAR}, #{owner,jdbcType=VARCHAR}, #{priority,jdbcType=VARCHAR}, 
+      #{isDw,jdbcType=VARCHAR}, #{dwLevel,jdbcType=VARCHAR}, #{lineageId,jdbcType=INTEGER}, 
+      #{fieldNum,jdbcType=INTEGER}, #{partitionType,jdbcType=INTEGER}, #{partitionCount,jdbcType=INTEGER}, 
+      #{partitionField,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{extractLogic,jdbcType=VARCHAR}, 
+      #{extractTime,jdbcType=VARCHAR}, #{businesDesc,jdbcType=VARCHAR}, #{dbCount,jdbcType=BIGINT}, 
+      #{fileLocation,jdbcType=VARCHAR}, #{filesize,jdbcType=BIGINT}, #{fileFormat,jdbcType=VARCHAR}, 
+      #{fileCompress,jdbcType=VARCHAR}, #{fileCount,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_table
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dbName != null" >
+        db_name,
+      </if>
+      <if test="tableName != null" >
+        table_name,
+      </if>
+      <if test="dbTable != null" >
+        db_table,
+      </if>
+      <if test="dbType != null" >
+        db_type,
+      </if>
+      <if test="owner != null" >
+        owner,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="isDw != null" >
+        is_dw,
+      </if>
+      <if test="dwLevel != null" >
+        dw_level,
+      </if>
+      <if test="lineageId != null" >
+        lineage_id,
+      </if>
+      <if test="fieldNum != null" >
+        field_num,
+      </if>
+      <if test="partitionType != null" >
+        partition_type,
+      </if>
+      <if test="partitionCount != null" >
+        partition_count,
+      </if>
+      <if test="partitionField != null" >
+        partition_field,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="extractLogic != null" >
+        extract_logic,
+      </if>
+      <if test="extractTime != null" >
+        extract_time,
+      </if>
+      <if test="businesDesc != null" >
+        busines_desc,
+      </if>
+      <if test="dbCount != null" >
+        db_count,
+      </if>
+      <if test="fileLocation != null" >
+        file_location,
+      </if>
+      <if test="filesize != null" >
+        filesize,
+      </if>
+      <if test="fileFormat != null" >
+        file_format,
+      </if>
+      <if test="fileCompress != null" >
+        file_compress,
+      </if>
+      <if test="fileCount != null" >
+        file_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dbName != null" >
+        #{dbName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dbTable != null" >
+        #{dbTable,jdbcType=VARCHAR},
+      </if>
+      <if test="dbType != null" >
+        #{dbType,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="isDw != null" >
+        #{isDw,jdbcType=VARCHAR},
+      </if>
+      <if test="dwLevel != null" >
+        #{dwLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="lineageId != null" >
+        #{lineageId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldNum != null" >
+        #{fieldNum,jdbcType=INTEGER},
+      </if>
+      <if test="partitionType != null" >
+        #{partitionType,jdbcType=INTEGER},
+      </if>
+      <if test="partitionCount != null" >
+        #{partitionCount,jdbcType=INTEGER},
+      </if>
+      <if test="partitionField != null" >
+        #{partitionField,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="extractLogic != null" >
+        #{extractLogic,jdbcType=VARCHAR},
+      </if>
+      <if test="extractTime != null" >
+        #{extractTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businesDesc != null" >
+        #{businesDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="dbCount != null" >
+        #{dbCount,jdbcType=BIGINT},
+      </if>
+      <if test="fileLocation != null" >
+        #{fileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null" >
+        #{filesize,jdbcType=BIGINT},
+      </if>
+      <if test="fileFormat != null" >
+        #{fileFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCompress != null" >
+        #{fileCompress,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCount != null" >
+        #{fileCount,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    update metadata_table
+    <set >
+      <if test="dbName != null" >
+        db_name = #{dbName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="dbTable != null" >
+        db_table = #{dbTable,jdbcType=VARCHAR},
+      </if>
+      <if test="dbType != null" >
+        db_type = #{dbType,jdbcType=VARCHAR},
+      </if>
+      <if test="owner != null" >
+        owner = #{owner,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="isDw != null" >
+        is_dw = #{isDw,jdbcType=VARCHAR},
+      </if>
+      <if test="dwLevel != null" >
+        dw_level = #{dwLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="lineageId != null" >
+        lineage_id = #{lineageId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldNum != null" >
+        field_num = #{fieldNum,jdbcType=INTEGER},
+      </if>
+      <if test="partitionType != null" >
+        partition_type = #{partitionType,jdbcType=INTEGER},
+      </if>
+      <if test="partitionCount != null" >
+        partition_count = #{partitionCount,jdbcType=INTEGER},
+      </if>
+      <if test="partitionField != null" >
+        partition_field = #{partitionField,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="extractLogic != null" >
+        extract_logic = #{extractLogic,jdbcType=VARCHAR},
+      </if>
+      <if test="extractTime != null" >
+        extract_time = #{extractTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businesDesc != null" >
+        busines_desc = #{businesDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="dbCount != null" >
+        db_count = #{dbCount,jdbcType=BIGINT},
+      </if>
+      <if test="fileLocation != null" >
+        file_location = #{fileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null" >
+        filesize = #{filesize,jdbcType=BIGINT},
+      </if>
+      <if test="fileFormat != null" >
+        file_format = #{fileFormat,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCompress != null" >
+        file_compress = #{fileCompress,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCount != null" >
+        file_count = #{fileCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    update metadata_table
+    set db_name = #{dbName,jdbcType=VARCHAR},
+      table_name = #{tableName,jdbcType=VARCHAR},
+      db_table = #{dbTable,jdbcType=VARCHAR},
+      db_type = #{dbType,jdbcType=VARCHAR},
+      owner = #{owner,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      is_dw = #{isDw,jdbcType=VARCHAR},
+      dw_level = #{dwLevel,jdbcType=VARCHAR},
+      lineage_id = #{lineageId,jdbcType=INTEGER},
+      field_num = #{fieldNum,jdbcType=INTEGER},
+      partition_type = #{partitionType,jdbcType=INTEGER},
+      partition_count = #{partitionCount,jdbcType=INTEGER},
+      partition_field = #{partitionField,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      note = #{note,jdbcType=VARCHAR},
+      comment = #{comment,jdbcType=VARCHAR},
+      extract_logic = #{extractLogic,jdbcType=VARCHAR},
+      extract_time = #{extractTime,jdbcType=VARCHAR},
+      busines_desc = #{businesDesc,jdbcType=VARCHAR},
+      db_count = #{dbCount,jdbcType=BIGINT},
+      file_location = #{fileLocation,jdbcType=VARCHAR},
+      filesize = #{filesize,jdbcType=BIGINT},
+      file_format = #{fileFormat,jdbcType=VARCHAR},
+      file_compress = #{fileCompress,jdbcType=VARCHAR},
+      file_count = #{fileCount,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findTableByTableInfo" resultType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    select * from metadata_table
+    <where>
+      <if test="metadata.dbName !=null and metadata.dbName != ''">
+        db_name = #{metadata.dbName}
+      </if>
+      <if test="metadata.dbType !=null and metadata.dbType != ''">
+        and db_type = #{metadata.dbType}
+      </if>
+      <if test="metadata.tableName !=null and metadata.tableName != ''">
+        and table_name = #{metadata.tableName}
+      </if>
+      <if test="metadata.dbTable !=null and metadata.dbTable != ''">
+        and db_table = #{metadata.dbTable}
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <select id="findDeleteName" resultType="java.lang.String" >
+    select db_name from metadata_table
+  </select>
+
+  <select id="findTableByTableInfoFuzzy" resultType="com.metalineage.databus.manager.entity.metadata.MetadataTable" >
+    select * from metadata_table
+    <where>
+      <if test="metadata.dbTable !=null and metadata.dbTable != ''">
+        db_table like concat(concat('%',#{metadata.dbTable}),'%')
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <select id="findById" resultType="com.metalineage.databus.manager.entity.metadata.MetadataTable">
+    select * from metadata_table where id = #{id}
+  </select>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_table (db_name, table_name, db_table,
+    db_type, owner, priority,
+    is_dw, dw_level, lineage_id,
+    field_num, partition_type, partition_count,
+    partition_field, create_time, update_time,
+    note, comment, extract_logic,
+    busines_desc, db_count, file_location,
+    filesize, file_format, file_compress,
+    file_count)
+    values
+    <foreach collection ="metatableList" item="metatable" separator =",">
+      (#{metatable.dbName,jdbcType=VARCHAR}, #{metatable.tableName,jdbcType=VARCHAR},
+      #{metatable.dbTable,jdbcType=VARCHAR}, #{metatable.dbType,jdbcType=VARCHAR},
+      #{metatable.owner,jdbcType=VARCHAR}, #{metatable.priority,jdbcType=INTEGER}, #{metatable.isDw,jdbcType=VARCHAR},
+      #{metatable.dwLevel,jdbcType=VARCHAR}, #{metatable.lineageId,jdbcType=INTEGER}, #{metatable.fieldNum,jdbcType=INTEGER},
+      #{metatable.partitionType,jdbcType=INTEGER}, #{metatable.partitionCount,jdbcType=INTEGER}, #{metatable.partitionField,jdbcType=VARCHAR},
+      #{metatable.createTime,jdbcType=TIMESTAMP}, #{metatable.updateTime,jdbcType=TIMESTAMP}, #{metatable.note,jdbcType=VARCHAR},
+      #{metatable.comment,jdbcType=VARCHAR}, #{metatable.extractLogic,jdbcType=VARCHAR}, #{metatable.businesDesc,jdbcType=VARCHAR},
+      #{metatable.dbCount,jdbcType=BIGINT}, #{metatable.fileLocation,jdbcType=VARCHAR}, #{metatable.filesize,jdbcType=BIGINT},
+      #{metatable.fileFormat,jdbcType=VARCHAR}, #{metatable.fileCompress,jdbcType=VARCHAR}, #{metatable.fileCount,jdbcType=BIGINT}
+      )
+    </foreach >
+  </insert>
+
+  <delete id="deleteAll">
+    delete from metadata_table;
+  </delete>
+
+</mapper>

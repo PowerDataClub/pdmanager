@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.SchedulerInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="workflow_name" property="workflowName" jdbcType="VARCHAR" />
+    <result column="workflow_description" property="workflowDescription" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="scheduler_time" property="schedulerTime" jdbcType="VARCHAR" />
+    <result column="scheduler_stutas" property="schedulerStutas" jdbcType="VARCHAR" />
+    <result column="workflow_url" property="workflowUrl" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="task_description" property="taskDescription" jdbcType="VARCHAR" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+    <result column="file_names" property="fileNames" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" extends="BaseResultMap" >
+    <result column="sql_text" property="sqlText" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, workflow_name, workflow_description, project_name, scheduler_time, scheduler_stutas,
+    workflow_url, user_name, task_name, task_description, table_id, file_names, create_time,
+    update_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    sql_text
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from scheduler_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from scheduler_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into scheduler_info (workflow_name, workflow_description,
+    project_name, scheduler_time, scheduler_stutas,
+    workflow_url, user_name, task_name,
+    task_description, table_id, file_names,
+    create_time, update_time, sql_text
+    )
+    values (#{workflowName,jdbcType=VARCHAR}, #{workflowDescription,jdbcType=VARCHAR},
+    #{projectName,jdbcType=VARCHAR}, #{schedulerTime,jdbcType=VARCHAR}, #{schedulerStutas,jdbcType=VARCHAR},
+    #{workflowUrl,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{taskName,jdbcType=VARCHAR},
+    #{taskDescription,jdbcType=VARCHAR}, #{tableId,jdbcType=INTEGER}, #{fileNames,jdbcType=VARCHAR},
+    #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{sqlText,jdbcType=LONGVARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into scheduler_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="workflowName != null" >
+        workflow_name,
+      </if>
+      <if test="workflowDescription != null" >
+        workflow_description,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="schedulerTime != null" >
+        scheduler_time,
+      </if>
+      <if test="schedulerStutas != null" >
+        scheduler_stutas,
+      </if>
+      <if test="workflowUrl != null" >
+        workflow_url,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="taskName != null" >
+        task_name,
+      </if>
+      <if test="taskDescription != null" >
+        task_description,
+      </if>
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="fileNames != null" >
+        file_names,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="sqlText != null" >
+        sql_text,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="workflowName != null" >
+        #{workflowName,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowDescription != null" >
+        #{workflowDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerTime != null" >
+        #{schedulerTime,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerStutas != null" >
+        #{schedulerStutas,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowUrl != null" >
+        #{workflowUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null" >
+        #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null" >
+        #{taskDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="fileNames != null" >
+        #{fileNames,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sqlText != null" >
+        #{sqlText,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    update scheduler_info
+    <set >
+      <if test="workflowName != null" >
+        workflow_name = #{workflowName,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowDescription != null" >
+        workflow_description = #{workflowDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerTime != null" >
+        scheduler_time = #{schedulerTime,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulerStutas != null" >
+        scheduler_stutas = #{schedulerStutas,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowUrl != null" >
+        workflow_url = #{workflowUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskName != null" >
+        task_name = #{taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="taskDescription != null" >
+        task_description = #{taskDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="fileNames != null" >
+        file_names = #{fileNames,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sqlText != null" >
+        sql_text = #{sqlText,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    update scheduler_info
+    set workflow_name = #{workflowName,jdbcType=VARCHAR},
+        workflow_description = #{workflowDescription,jdbcType=VARCHAR},
+        project_name = #{projectName,jdbcType=VARCHAR},
+        scheduler_time = #{schedulerTime,jdbcType=VARCHAR},
+        scheduler_stutas = #{schedulerStutas,jdbcType=VARCHAR},
+        workflow_url = #{workflowUrl,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        task_name = #{taskName,jdbcType=VARCHAR},
+        task_description = #{taskDescription,jdbcType=VARCHAR},
+        table_id = #{tableId,jdbcType=INTEGER},
+        file_names = #{fileNames,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        sql_text = #{sqlText,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    update scheduler_info
+    set workflow_name = #{workflowName,jdbcType=VARCHAR},
+        workflow_description = #{workflowDescription,jdbcType=VARCHAR},
+        project_name = #{projectName,jdbcType=VARCHAR},
+        scheduler_time = #{schedulerTime,jdbcType=VARCHAR},
+        scheduler_stutas = #{schedulerStutas,jdbcType=VARCHAR},
+        workflow_url = #{workflowUrl,jdbcType=VARCHAR},
+        user_name = #{userName,jdbcType=VARCHAR},
+        task_name = #{taskName,jdbcType=VARCHAR},
+        task_description = #{taskDescription,jdbcType=VARCHAR},
+        table_id = #{tableId,jdbcType=INTEGER},
+        file_names = #{fileNames,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findSchedulerBySchedulerInfo" resultType="com.metalineage.databus.manager.entity.metadata.SchedulerInfo" >
+    select * from scheduler_info
+    <where>
+      <if test="scheduler.projectName !=null and scheduler.projectName != ''">
+        project_name = #{scheduler.projectName}
+      </if>
+      <if test="scheduler.workflowName !=null and scheduler.workflowName != ''">
+        and workflow_name = #{scheduler.workflowName}
+      </if>
+      <if test="scheduler.taskName !=null and scheduler.taskName != ''">
+        and task_name = #{scheduler.taskName}
+      </if>
+      <if test="scheduler.tableId !=null and scheduler.tableId != ''">
+        and table_id = #{scheduler.tableId}
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into scheduler_info (workflow_name, workflow_description,
+    project_name, scheduler_time, scheduler_stutas,
+    workflow_url, user_name, task_name,
+    task_description, table_id, file_names,
+    create_time, update_time, sql_text
+    )
+    values
+    <foreach collection ="schedulerList" item="scheduler" separator =",">
+      (#{scheduler.workflowName,jdbcType=VARCHAR}, #{scheduler.workflowDescription,jdbcType=VARCHAR},
+      #{scheduler.projectName,jdbcType=VARCHAR}, #{scheduler.schedulerTime,jdbcType=VARCHAR}, #{scheduler.schedulerStutas,jdbcType=VARCHAR},
+      #{scheduler.workflowUrl,jdbcType=VARCHAR}, #{scheduler.userName,jdbcType=VARCHAR}, #{scheduler.taskName,jdbcType=VARCHAR},
+      #{scheduler.taskDescription,jdbcType=VARCHAR}, #{scheduler.tableId,jdbcType=INTEGER}, #{scheduler.fileNames,jdbcType=VARCHAR},
+      #{scheduler.createTime,jdbcType=TIMESTAMP}, #{scheduler.updateTime,jdbcType=TIMESTAMP}, #{scheduler.sqlText,jdbcType=LONGVARCHAR}
+      )
+    </foreach >
+  </insert>
+
+  <delete id="deleteAll">
+    delete from scheduler_info;
+  </delete>
+
+</mapper>

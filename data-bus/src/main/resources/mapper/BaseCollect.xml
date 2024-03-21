@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.ManagerMetadataFieldMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="table_id" property="tableId" jdbcType="INTEGER" />
+    <result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+    <result column="field_type" property="fieldType" jdbcType="VARCHAR" />
+    <result column="field_comment" property="fieldComment" jdbcType="VARCHAR" />
+    <result column="is_key" property="isKey" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, table_id, field_name, field_type, field_comment, is_key, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from metadata_field
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from metadata_field
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_field (table_id, field_name, field_type, 
+      field_comment, is_key, create_time, 
+      update_time)
+    values (#{tableId,jdbcType=INTEGER}, #{fieldName,jdbcType=VARCHAR}, #{fieldType,jdbcType=VARCHAR}, 
+      #{fieldComment,jdbcType=VARCHAR}, #{isKey,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_field
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tableId != null" >
+        table_id,
+      </if>
+      <if test="fieldName != null" >
+        field_name,
+      </if>
+      <if test="fieldType != null" >
+        field_type,
+      </if>
+      <if test="fieldComment != null" >
+        field_comment,
+      </if>
+      <if test="isKey != null" >
+        is_key,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tableId != null" >
+        #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        #{fieldType,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldComment != null" >
+        #{fieldComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKey != null" >
+        #{isKey,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    update metadata_field
+    <set >
+      <if test="tableId != null" >
+        table_id = #{tableId,jdbcType=INTEGER},
+      </if>
+      <if test="fieldName != null" >
+        field_name = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldType != null" >
+        field_type = #{fieldType,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldComment != null" >
+        field_comment = #{fieldComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKey != null" >
+        is_key = #{isKey,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    update metadata_field
+    set table_id = #{tableId,jdbcType=INTEGER},
+      field_name = #{fieldName,jdbcType=VARCHAR},
+      field_type = #{fieldType,jdbcType=VARCHAR},
+      field_comment = #{fieldComment,jdbcType=VARCHAR},
+      is_key = #{isKey,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findFieldByFieldInfo" resultType="com.metalineage.databus.manager.entity.metadata.MetadataField" >
+    select * from metadata_field
+    <where>
+      <if test="metafield.tableId !=null and metafield.tableId != ''">
+        table_id = #{metafield.tableId}
+      </if>
+      <if test="metafield.fieldName !=null and metafield.fieldName != ''">
+        and field_name = #{metafield.fieldName}
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <select id="findByTableId" resultType="com.metalineage.databus.manager.entity.metadata.MetadataField">
+    select * from metadata_field where table_id = #{tableId} limit #{startOffset}, #{pageSize}
+  </select>
+
+  <insert id="insertBatch" parameterType="java.util.List">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into metadata_field (table_id, field_name, field_type,
+    field_comment, is_key, create_time,
+    update_time)
+    values
+    <foreach collection ="metadataFieldList" item="metaField" separator =",">
+      (#{metaField.tableId,jdbcType=INTEGER}, #{metaField.fieldName,jdbcType=VARCHAR}, #{metaField.fieldType,jdbcType=VARCHAR},
+      #{metaField.fieldComment,jdbcType=VARCHAR}, #{metaField.isKey,jdbcType=INTEGER}, #{metaField.createTime,jdbcType=TIMESTAMP},
+      #{metaField.updateTime,jdbcType=TIMESTAMP})
+    </foreach >
+  </insert>
+
+  <delete id="deleteAll">
+--     truncate metadata_field;
+    delete from metadata_field;
+  </delete>
+
+</mapper>

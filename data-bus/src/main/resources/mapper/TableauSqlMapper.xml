@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.metalineage.databus.manager.mapper.metadata.TableauSqlMapper" >
+  <resultMap id="BaseResultMap" type="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <id column="md5" property="md5" jdbcType="VARCHAR" />
+    <id column="workbook" property="workbook" jdbcType="VARCHAR" />
+    <result column="workbook_id" property="workbookId" jdbcType="VARCHAR" />
+    <result column="workbook_path" property="workbookPath" jdbcType="VARCHAR" />
+    <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+    <result column="webpage_url" property="webpageUrl" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.metalineage.databus.manager.entity.metadata.TableauSql" extends="BaseResultMap" >
+    <result column="book_sql" property="bookSql" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, md5, workbook, workbook_id, workbook_path, gmt_create, gmt_modified, webpage_url,
+    name
+  </sql>
+  <sql id="Blob_Column_List" >
+    book_sql
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSqlKey" >
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tableau_sql
+    where id = #{id,jdbcType=INTEGER}
+    and md5 = #{md5,jdbcType=VARCHAR}
+    and workbook = #{workbook,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSqlKey" >
+    delete from tableau_sql
+    where id = #{id,jdbcType=INTEGER}
+      and md5 = #{md5,jdbcType=VARCHAR}
+      and workbook = #{workbook,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tableau_sql (md5, workbook, workbook_id,
+    workbook_path, gmt_create, gmt_modified,
+    webpage_url, name, book_sql
+    )
+    values (#{md5,jdbcType=VARCHAR}, #{workbook,jdbcType=VARCHAR}, #{workbookId,jdbcType=VARCHAR},
+    #{workbookPath,jdbcType=VARCHAR}, #{gmtCreate,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP},
+    #{webpageUrl,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{bookSql,jdbcType=LONGVARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tableau_sql
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="md5 != null" >
+        md5,
+      </if>
+      <if test="workbook != null" >
+        workbook,
+      </if>
+      <if test="workbookId != null" >
+        workbook_id,
+      </if>
+      <if test="workbookPath != null" >
+        workbook_path,
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create,
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified,
+      </if>
+      <if test="webpageUrl != null" >
+        webpage_url,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="bookSql != null" >
+        book_sql,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="md5 != null" >
+        #{md5,jdbcType=VARCHAR},
+      </if>
+      <if test="workbook != null" >
+        #{workbook,jdbcType=VARCHAR},
+      </if>
+      <if test="workbookId != null" >
+        #{workbookId,jdbcType=VARCHAR},
+      </if>
+      <if test="workbookPath != null" >
+        #{workbookPath,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="webpageUrl != null" >
+        #{webpageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bookSql != null" >
+        #{bookSql,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    update tableau_sql
+    <set >
+      <if test="workbookId != null" >
+        workbook_id = #{workbookId,jdbcType=VARCHAR},
+      </if>
+      <if test="workbookPath != null" >
+        workbook_path = #{workbookPath,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreate != null" >
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null" >
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+      <if test="webpageUrl != null" >
+        webpage_url = #{webpageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="bookSql != null" >
+        book_sql = #{bookSql,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+    and md5 = #{md5,jdbcType=VARCHAR}
+    and workbook = #{workbook,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    update tableau_sql
+    set workbook_id = #{workbookId,jdbcType=VARCHAR},
+        workbook_path = #{workbookPath,jdbcType=VARCHAR},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+        webpage_url = #{webpageUrl,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        book_sql = #{bookSql,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and md5 = #{md5,jdbcType=VARCHAR}
+      and workbook = #{workbook,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    update tableau_sql
+    set workbook_id = #{workbookId,jdbcType=VARCHAR},
+        workbook_path = #{workbookPath,jdbcType=VARCHAR},
+        gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+        webpage_url = #{webpageUrl,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+      and md5 = #{md5,jdbcType=VARCHAR}
+      and workbook = #{workbook,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findTableauByTableauInfo" resultType="com.metalineage.databus.manager.entity.metadata.TableauSql" >
+    select * from tableau_sql
+    <where>
+      <if test="tableau.workbook !=null and tableau.workbook != ''">
+        workbook = #{tableau.workbook}
+      </if>
+    </where>
+    limit #{startOffset}, #{pageSize}
+  </select>
+
+  <select id="findAllWorkbook" resultType="java.lang.String">
+    select distinct workbook from tableau_sql
+  </select>
+</mapper>
