@@ -62,6 +62,7 @@ public class MysqlCollect extends DatabaseCollect {
         return tableMetadatas;
     }
 
+    //获取表的列元数据信息
     @Override
     public void setTableColumnsInfo(TableMetadataEntity tableMetadata) {
         JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getColumnsinfoSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
@@ -108,6 +109,5 @@ public class MysqlCollect extends DatabaseCollect {
         MysqlCollect mysqlCollect = new MysqlCollect("test","mysql","jdbc:mysql://127.0.0.1:3306/sys?useSSL=false","root","000000","test");
         mysqlCollect.setDbTablesMetadata();
         MetadataEntity metadata = mysqlCollect.getMetadataEntity();
-        System.out.println(metadata.dbNames);
     }
 }
