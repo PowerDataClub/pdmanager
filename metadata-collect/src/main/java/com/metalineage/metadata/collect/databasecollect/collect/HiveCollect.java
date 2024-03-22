@@ -17,6 +17,11 @@ public class HiveCollect extends DatabaseCollect {
     }
 
     @Override
+    public void setTableColumnsInfo(TableMetadataEntity tableMetadata) {
+
+    }
+
+    @Override
     public void setTableBaseMetadata(TableMetadataEntity tableMetadata) {
 
     }

@@ -50,7 +50,10 @@ public abstract class DatabaseCollect {
         setBaseMetadata();
     }
     /**
-     * 获取数据库的基础元数据信息并赋值
+     * 获取数据库的基础元数据信息并赋值包括
+     * 是否只读
+     * 是否支持事务
+     * 数据库版本
      */
     protected void setBaseMetadata(){
         try {
@@ -58,6 +61,7 @@ public abstract class DatabaseCollect {
             metadataEntity.setReadOnly(databaseMetaData.isReadOnly());
             metadataEntity.setSupportsTransactions(databaseMetaData.supportsTransactions());
             metadataEntity.setDbVersion(databaseMetaData.getDatabaseProductVersion());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,6 +110,8 @@ public abstract class DatabaseCollect {
      */
     public abstract List<TableMetadataEntity> getTableMetadata(String dbName);
 
+
+
     /**
      * 获取表的记录数
      * @param tableMetadata 表元数据实体
@@ -118,6 +124,10 @@ public abstract class DatabaseCollect {
         }
     }
 
+    //获取表的列的元数据信息
+    public abstract void setTableColumnsInfo(TableMetadataEntity tableMetadata);
+
+    //设置表的基本元数据信息包括更新时间、引擎、建表语句、备注等等
     public abstract void setTableBaseMetadata(TableMetadataEntity tableMetadata);
 
     /**

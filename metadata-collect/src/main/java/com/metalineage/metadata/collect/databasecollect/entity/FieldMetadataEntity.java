@@ -15,7 +15,7 @@ public class FieldMetadataEntity  {
     private String fieldComment;
 
     //是否主键字段
-    private Integer isKey;
+    private Boolean isKey;
 
     //主键类型，主键，外键，聚合键，排序键等
     private Integer keyType;
@@ -27,6 +27,8 @@ public class FieldMetadataEntity  {
     private Integer indexType;
 
     //可否为空
-    private Integer isNullAble;
+    private Boolean isNullAble;
+
+    private String defaultValue;
 
 }

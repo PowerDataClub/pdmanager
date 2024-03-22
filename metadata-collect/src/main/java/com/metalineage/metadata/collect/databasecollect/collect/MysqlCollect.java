@@ -53,7 +53,8 @@ public class MysqlCollect extends DatabaseCollect {
             tableMetadata.setCreateTime(System.currentTimeMillis());
             //设置表的数据条数
             setTableRecordCount(tableMetadata);
-            setTableStatus(tableMetadata);
+            setTableBaseMetadata(tableMetadata);
+            setTableColumnsInfo(tableMetadata);
             //
             //添加到元数据实体列表中
             tableMetadatas.add(tableMetadata);
@@ -61,18 +62,27 @@ public class MysqlCollect extends DatabaseCollect {
         return tableMetadatas;
     }
 
-    //上次代码写到这儿了，别忘了  liqifeng  powerdata
     @Override
-    public void setTableBaseMetadata(TableMetadataEntity tableMetadata) {
-
-
+    public void setTableColumnsInfo(TableMetadataEntity tableMetadata) {
+        JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getColumnsinfoSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
+        List<FieldMetadataEntity> fieldMetadataEntitys = new ArrayList<>();
+        for (int i = 0; i < resultSet.size(); i++) {
+            JSONObject jsonObject = resultSet.getJSONObject(i);
+            FieldMetadataEntity fieldMetadataEntity = new FieldMetadataEntity();
+            fieldMetadataEntity.setFieldName(jsonObject.getString("Field"));
+            fieldMetadataEntity.setFieldType(jsonObject.getString("Type"));
+            fieldMetadataEntity.setFieldComment(jsonObject.getString("Comment"));
+            fieldMetadataEntity.setIsKey(jsonObject.getString("Key") != null && !jsonObject.getString("Key").isEmpty());
+            fieldMetadataEntity.setIsNullAble(!jsonObject.getString("Null").equals("NO"));
+            fieldMetadataEntity.setDefaultValue(jsonObject.getString("Default"));
+            fieldMetadataEntitys.add(fieldMetadataEntity);
+        }
+        tableMetadata.setFields(fieldMetadataEntitys);
     }
 
-    /**
-     * 获取表的状态信息
-     * @param tableMetadata 表元数据实体
-     */
-    public void setTableStatus(TableMetadataEntity tableMetadata) {
+    //设置表的基本元数据信息包括更新时间、引擎、建表语句、备注等等
+    @Override
+    public void setTableBaseMetadata(TableMetadataEntity tableMetadata) {
         JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getTableStatusSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
         for (int i = 0; i < resultSet.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
@@ -84,9 +94,15 @@ public class MysqlCollect extends DatabaseCollect {
             tableMetadata.setFileSpace(jsonObject.getLong("Data_length"));
             tableMetadata.setEngine(jsonObject.getString("Engine"));
             tableMetadata.setFileFormat(jsonObject.getString("Row_format"));
+            tableMetadata.setComment(jsonObject.getString("Comment"));
+        }
+
+        JSONArray resultSet2 = jdbcUtil.query(MysqlQuerySql.getCreateTableSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
+        for (int i = 0; i < resultSet2.size(); i++) {
+            JSONObject jsonObject = resultSet.getJSONObject(i);
+            tableMetadata.setCreateTableSql(jsonObject.getString("Create_Table"));
         }
     }
-
 
     public static void main(String[] args) {
         MysqlCollect mysqlCollect = new MysqlCollect("test","mysql","jdbc:mysql://127.0.0.1:3306/sys?useSSL=false","root","000000","test");
