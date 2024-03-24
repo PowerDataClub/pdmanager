@@ -24,6 +24,22 @@
 			<version>1.14.3</version> <!-- 或者替换为最新版本号 -->
 		</dependency>
 
+		<!-- Hive Metastore Client -->
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-metastore</artifactId>
+			<version>2.1.1</version>
+			<!-- 如果你是用在Spark或Hadoop相关的环境中，可能还需要排除不需要的模块或指定正确的scope -->
+		</dependency>
+
+		<!-- Thrift Lib -->
+		<dependency>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libthrift</artifactId>
+			<!-- 根据Hive 2.1.1的依赖，Thrift版本应与Hive兼容 -->
+			<version>0.9.3</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -34,6 +50,12 @@
 			<groupId>com.metalineage</groupId>
 			<artifactId>data-bus</artifactId>
 			<version>0.0.1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>log4j-to-slf4j</artifactId>
+					<groupId>org.apache.logging.log4j</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
         <dependency>
             <groupId>org.reflections</groupId>

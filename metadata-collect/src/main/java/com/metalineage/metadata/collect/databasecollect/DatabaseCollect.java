@@ -25,6 +25,8 @@ public abstract class DatabaseCollect {
     //元数据信息实体类
     public MetadataEntity metadataEntity;
 
+
+
     /**
      * 构造函数
      * @param dbType 数据库类型
@@ -61,14 +63,13 @@ public abstract class DatabaseCollect {
             metadataEntity.setReadOnly(databaseMetaData.isReadOnly());
             metadataEntity.setSupportsTransactions(databaseMetaData.supportsTransactions());
             metadataEntity.setDbVersion(databaseMetaData.getDatabaseProductVersion());
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     };
 
     /**
-     * 获取数据库的所有数据库名信息并返回
+     * 获取数据库的所有数据库名信息并返回。不包含mysql基础数据库
      */
     protected void setDbNamesMetadata(){
         String sql = MysqlQuerySql.getDbnamesSql();
@@ -77,8 +78,12 @@ public abstract class DatabaseCollect {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             metadataEntity.dbNames.add(jsonObject.getString("Database"));
         }
+        //移除mysql基础数据库
+        metadataEntity.dbNames.remove("mysql");
+        metadataEntity.dbNames.remove("information_schema");
+        metadataEntity.dbNames.remove("performance_schema");
+        metadataEntity.dbNames.remove("sys");
     }
-
     /**
      * 获取每个数据库的表名列表，并赋值到元数据实体类中
      */

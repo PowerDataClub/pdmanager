@@ -109,5 +109,6 @@ public class MysqlCollect extends DatabaseCollect {
         MysqlCollect mysqlCollect = new MysqlCollect("test","mysql","jdbc:mysql://127.0.0.1:3306/sys?useSSL=false","root","000000","test");
         mysqlCollect.setDbTablesMetadata();
         MetadataEntity metadata = mysqlCollect.getMetadataEntity();
+        System.out.println(JSONObject.toJSONString(metadata));
     }
 }
