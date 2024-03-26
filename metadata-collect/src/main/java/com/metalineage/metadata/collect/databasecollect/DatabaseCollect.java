@@ -69,22 +69,13 @@ public abstract class DatabaseCollect {
     };
 
     /**
-     * 获取数据库的所有数据库名信息并返回。不包含mysql基础数据库
+     * 获取数据库的所有数据库名信息并返回。
      */
     protected void setDbNamesMetadata(){
-        String sql = MysqlQuerySql.getDbnamesSql();
-        JSONArray jsonArray = jdbcUtil.query(sql);
-        for(int i =0;i<jsonArray.size();i++){
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            metadataEntity.dbNames.add(jsonObject.getString("Database"));
-        }
-        //移除mysql基础数据库
-        metadataEntity.dbNames.remove("mysql");
-        metadataEntity.dbNames.remove("information_schema");
-        metadataEntity.dbNames.remove("performance_schema");
-        metadataEntity.dbNames.remove("sys");
     }
+
     /**
+     * 核心入口执行类
      * 获取每个数据库的表名列表，并赋值到元数据实体类中
      */
     public void setDbTablesMetadata() {
@@ -122,11 +113,6 @@ public abstract class DatabaseCollect {
      * @param tableMetadata 表元数据实体
      */
     public void setTableRecordCount(TableMetadataEntity tableMetadata) {
-        JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getCountSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
-        for (int i = 0; i < resultSet.size(); i++) {
-            JSONObject jsonObject = resultSet.getJSONObject(i);
-            tableMetadata.setRecordCount(jsonObject.getLong("recordCount"));
-        }
     }
 
     //获取表的列的元数据信息

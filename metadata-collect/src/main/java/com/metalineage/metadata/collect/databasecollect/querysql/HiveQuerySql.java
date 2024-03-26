@@ -13,11 +13,8 @@ public class HiveQuerySql {
     //已开发 获取所有表名（指定数据库）
     private static final String TABLE_NAMES_SQL = "SHOW TABLES IN `%s`";
 
-    //已开发  获取表行数的SQL语句
-    private static final String COUNT_SQL = "select count(1) as recordCount from `%s`.`%s`";
-
-    //表状态的分区字段
-    private static final String PARTITIONS = "show partitions `%s`.`%s`";
+    //表状态的SQL语句
+    private static final String TABLE_STATUS_SQL = "DESCRIBE FORMATTED `%s`.`%s`";
 
     //获取表结构的SQL语句
     private static final String CREATE_TABLE_SQL = "show create table `%s`.`%s`";
@@ -25,28 +22,23 @@ public class HiveQuerySql {
     //获取表列信息的SQL语句
     private static final String COLUMNS_INFO_SQL = "describe `%s`.`%s`";
 
+    //刷新元数据信息，在每张表获取元数据之前，必须先执行这个命令。
+    private static final String REFRESH_METADATA = "ANALYZE TABLE `%s`.`%s` COMPUTE STATISTICS";
+
     // 获取所有表名（指定数据库）
     public static String getTableNamesSql(String dbName) {
         return String.format(TABLE_NAMES_SQL, dbName);
     }
 
-    // 获取表行数的SQL语句
-    public static String getCountSql(String dbName,String tableName) {
-        return String .format(COUNT_SQL, dbName,tableName);
+    // 刷新元数据信息
+    public static String refreshTableMetadata(String dbName,String tableName) {
+        return String.format(REFRESH_METADATA, dbName, tableName);
     }
+    
 
     // 获取表结构的SQL语句
     public static String getCreateTableSql(String dbName, String tableName) {
         return String.format(CREATE_TABLE_SQL, dbName, tableName);
-    }
-
-    /**
-     * 获取数据库名的SQL语句
-     *
-     * @return SQL语句
-     */
-    public static String getDbnamesSql() {
-        return DB_NAME_SQL;
     }
 
     /**
@@ -56,8 +48,17 @@ public class HiveQuerySql {
      * @param tableName 表名
      * @return SQL语句
      */
-    public static String getTablePartitons(String dbName, String tableName) {
-        return String.format(PARTITIONS, dbName, tableName);
+    public static String getTableStatusSql(String dbName, String tableName) {
+        return String.format(TABLE_STATUS_SQL, dbName, tableName);
+    }
+
+    /**
+     * 获取数据库名的SQL语句
+     *
+     * @return SQL语句
+     */
+    public static String getDbnamesSql() {
+        return DB_NAME_SQL;
     }
 
     /**

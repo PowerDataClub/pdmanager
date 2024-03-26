@@ -30,6 +30,23 @@ public class MysqlCollect extends DatabaseCollect {
     }
 
     /**
+     * 获取数据库的所有数据库名信息并返回。不包含mysql基础数据库
+     */
+    protected void setDbNamesMetadata(){
+        String sql = MysqlQuerySql.getDbnamesSql();
+        JSONArray jsonArray = jdbcUtil.query(sql);
+        for(int i =0;i<jsonArray.size();i++){
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            metadataEntity.dbNames.add(jsonObject.getString("Database"));
+        }
+        //移除mysql基础数据库
+        metadataEntity.dbNames.remove("mysql");
+        metadataEntity.dbNames.remove("information_schema");
+        metadataEntity.dbNames.remove("performance_schema");
+        metadataEntity.dbNames.remove("sys");
+    }
+
+    /**
      * 主函数
      * 获取每个数据库的表名列表，构建表元数据实体并返回
      * @param dbName 数据库名称
@@ -51,8 +68,7 @@ public class MysqlCollect extends DatabaseCollect {
             tableMetadata.setTableName(object.getString("TABLE_NAME"));
             //设置当前记录的获取时间
             tableMetadata.setCreateTime(System.currentTimeMillis());
-            //设置表的数据条数
-            setTableRecordCount(tableMetadata);
+            //设置表的基本信息
             setTableBaseMetadata(tableMetadata);
             setTableColumnsInfo(tableMetadata);
             //
@@ -84,6 +100,7 @@ public class MysqlCollect extends DatabaseCollect {
     //设置表的基本元数据信息包括更新时间、引擎、建表语句、备注等等
     @Override
     public void setTableBaseMetadata(TableMetadataEntity tableMetadata) {
+        setTableRecordCount(tableMetadata);
         JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getTableStatusSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
         for (int i = 0; i < resultSet.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
@@ -102,6 +119,18 @@ public class MysqlCollect extends DatabaseCollect {
         for (int i = 0; i < resultSet2.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
             tableMetadata.setCreateTableSql(jsonObject.getString("Create_Table"));
+        }
+    }
+
+    /**
+     * 获取表的记录数
+     * @param tableMetadata 表元数据实体
+     */
+    public void setTableRecordCount(TableMetadataEntity tableMetadata) {
+        JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getCountSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
+        for (int i = 0; i < resultSet.size(); i++) {
+            JSONObject jsonObject = resultSet.getJSONObject(i);
+            tableMetadata.setRecordCount(jsonObject.getLong("recordCount"));
         }
     }
 
