@@ -60,7 +60,6 @@ public abstract class DatabaseCollect {
     protected void setBaseMetadata(){
         try {
             DatabaseMetaData databaseMetaData = jdbcUtil.getConnection().getMetaData();
-            metadataEntity.setReadOnly(databaseMetaData.isReadOnly());
             metadataEntity.setSupportsTransactions(databaseMetaData.supportsTransactions());
             metadataEntity.setDbVersion(databaseMetaData.getDatabaseProductVersion());
         } catch (SQLException e) {

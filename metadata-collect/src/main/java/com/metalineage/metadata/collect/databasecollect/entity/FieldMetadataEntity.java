@@ -17,6 +17,9 @@ public class FieldMetadataEntity  {
     //是否主键字段
     private Boolean isKey;
 
+    //是否分区字段
+    private Boolean isPartitionKey;
+
     //主键类型，主键，外键，聚合键，排序键等
     private Integer keyType;
 

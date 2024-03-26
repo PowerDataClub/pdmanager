@@ -9,7 +9,6 @@ import com.metalineage.metadata.collect.databasecollect.entity.TableMetadataEnti
 import com.metalineage.metadata.collect.databasecollect.querysql.HiveQuerySql;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HiveCollect extends DatabaseCollect {
@@ -65,13 +64,15 @@ public class HiveCollect extends DatabaseCollect {
             tableMetadata.setCreateTime(System.currentTimeMillis());
 
             //在获取hive的表元数据之前，刷新当前表的最新的元数据信息。
-            jdbcUtil.query(HiveQuerySql.refreshTableMetadata(tableMetadata.getDbName(),tableMetadata.getTableName()));
-
+//            try {
+//                jdbcUtil.query(HiveQuerySql.refreshTableMetadata(tableMetadata.getDbName(), tableMetadata.getTableName()));
+//            }catch (Exception ignored){
+//            }
             //设置表的基本信息
             setTableBaseMetadata(tableMetadata);
+            System.out.println(tableMetadata.getDbName()+"."+tableMetadata.getTableName());
             //设置列的基本信息
-            setTableColumnsInfo(tableMetadata);
-            //
+//            setTableColumnsInfo(tableMetadata);
             //添加到元数据实体列表中
             tableMetadatas.add(tableMetadata);
         }
@@ -85,13 +86,25 @@ public class HiveCollect extends DatabaseCollect {
         List<FieldMetadataEntity> fieldMetadataEntitys = new ArrayList<>();
         for (int i = 0; i < resultSet.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
+            if(jsonObject.getString("col_name").isEmpty()){
+                break;
+            }
             FieldMetadataEntity fieldMetadataEntity = new FieldMetadataEntity();
-            fieldMetadataEntity.setFieldName(jsonObject.getString("Field"));
-            fieldMetadataEntity.setFieldType(jsonObject.getString("Type"));
-            fieldMetadataEntity.setFieldComment(jsonObject.getString("Comment"));
-            fieldMetadataEntity.setIsKey(jsonObject.getString("Key") != null && !jsonObject.getString("Key").isEmpty());
-            fieldMetadataEntity.setIsNullAble(!jsonObject.getString("Null").equals("NO"));
-            fieldMetadataEntity.setDefaultValue(jsonObject.getString("Default"));
+            fieldMetadataEntity.setFieldName(jsonObject.getString("col_name"));
+            fieldMetadataEntity.setFieldType(jsonObject.getString("data_type"));
+            fieldMetadataEntity.setFieldComment(jsonObject.getString("comment"));
+            fieldMetadataEntitys.add(fieldMetadataEntity);
+        }
+        for (int i = resultSet.size()-1; i >0; i--) {
+            JSONObject jsonObject = resultSet.getJSONObject(i);
+            if(jsonObject.getString("col_name").isEmpty()){
+                break;
+            }
+            FieldMetadataEntity fieldMetadataEntity = new FieldMetadataEntity();
+            fieldMetadataEntity.setFieldName(jsonObject.getString("col_name"));
+            fieldMetadataEntity.setFieldType(jsonObject.getString("data_type"));
+            fieldMetadataEntity.setFieldComment(jsonObject.getString("comment"));
+            fieldMetadataEntity.setIsPartitionKey(true);
             fieldMetadataEntitys.add(fieldMetadataEntity);
         }
         tableMetadata.setFields(fieldMetadataEntitys);
@@ -103,50 +116,56 @@ public class HiveCollect extends DatabaseCollect {
         JSONArray resultSet = jdbcUtil.query(HiveQuerySql.getTableStatusSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
         for (int i = 0; i < resultSet.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
-            String col_name = jsonObject.getString("col_name").trim();
-            String data_type = jsonObject.getString("data_type").trim();
-            String comment = jsonObject.getString("comment").trim();
-            if(col_name.isEmpty()&&data_type.contains("numFiles")){
-                tableMetadata.setPartitionCount(jsonObject.getInteger("comment"));
+            String col_name = jsonObject.getString("col_name");
+            String data_type = jsonObject.getString("data_type");
+            String comment = jsonObject.getString("comment");
+            if (data_type != null && col_name.isEmpty() && data_type.contains("numFiles")) {
+                tableMetadata.setFileCount(Long.parseLong(comment.trim()));
             }
-            if(col_name.isEmpty()&&data_type.equals("numRows")){
-                tableMetadata.setRecordCount(jsonObject.getLong("comment"));
+            if (data_type != null && col_name.isEmpty() && data_type.contains("numRows")) {
+                tableMetadata.setRecordCount(Long.parseLong(comment.trim()));
             }
-            if(col_name.isEmpty()&&data_type.equals("totalSize")){
-                tableMetadata.setFileSpace(jsonObject.getLong("comment"));
+            if (data_type != null && col_name.isEmpty() && data_type.contains("totalSize")) {
+                tableMetadata.setFileSpace(Long.parseLong(comment.trim()));
             }
-            if(col_name.isEmpty()&&data_type.equals("numFiles")){
-                tableMetadata.setPartitionCount(jsonObject.getInteger("comment"));
+            if (data_type != null && col_name.isEmpty() && data_type.contains("numPartitions")) {
+                tableMetadata.setPartitionCount(Integer.parseInt(comment.trim()));
             }
-            if(col_name.isEmpty()&&data_type.equals("parquet.compression")){
-                tableMetadata.setFileCompress(comment);
+            if (data_type != null && col_name.isEmpty() && data_type.contains("compression")) {
+                tableMetadata.setFileCompress(comment.trim());
             }
-            if(col_name.isEmpty()&&data_type.equals("comment")){
-                tableMetadata.setFileCompress(comment);
+            if (data_type != null && col_name.isEmpty() && data_type.contains("comment")) {
+                tableMetadata.setComment(comment.trim());
             }
-            if(col_name.equals("Location")){
-                tableMetadata.setFileLocation(data_type.trim());
+            if(col_name.contains("Location")){
+                if (data_type != null) {
+                    tableMetadata.setFileLocation(data_type.trim());
+                }
             }
-            if(col_name.equals("CreateTime")){
+            if(col_name.contains("CreateTime")){
                 tableMetadata.setTableCreateTime(jsonObject.getDate("Create_time"));
             }
-            if(col_name.equals("InputFormat: ")){
-                tableMetadata.setFileFormat(data_type);
+            if(col_name.contains("InputFormat:")){
+                if (data_type != null) {
+                    tableMetadata.setFileFormat(data_type.trim());
+                }
             }
         }
-
         //获取建表语句
         JSONArray resultSet2 = jdbcUtil.query(HiveQuerySql.getCreateTableSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < resultSet2.size(); i++) {
-            JSONObject jsonObject = resultSet.getJSONObject(i);
-            tableMetadata.setCreateTableSql(jsonObject.getString("createtab_stmt"));
+            JSONObject jsonObject = resultSet2.getJSONObject(i);
+            //由于hive建表语句有多行，这里需要做拼接处理
+            stringBuilder.append(jsonObject.getString("createtab_stmt")).append("\r\n");
         }
+        tableMetadata.setCreateTableSql(stringBuilder.toString());
     }
 
     public static void main(String[] args) {
-        MysqlCollect mysqlCollect = new MysqlCollect("test","mysql","jdbc:mysql://127.0.0.1:3306/sys?useSSL=false","root","000000","test");
-        mysqlCollect.setDbTablesMetadata();
-        MetadataEntity metadata = mysqlCollect.getMetadataEntity();
+        HiveCollect hiveCollect = new HiveCollect("test","hive","jdbc:hive2://172.17.0.102:10000","hdfs","","metadata_test");
+        hiveCollect.setDbTablesMetadata();
+        MetadataEntity metadata = hiveCollect.getMetadataEntity();
         System.out.println(JSONObject.toJSONString(metadata));
     }
 }

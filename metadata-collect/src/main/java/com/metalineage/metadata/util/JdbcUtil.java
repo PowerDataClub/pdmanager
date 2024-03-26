@@ -113,8 +113,7 @@ public class JdbcUtil {
             }
             return jsonArray;
             //5. 释放资源
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ignored) {
         } finally {
             closeQuery(rs,ps);
         }
