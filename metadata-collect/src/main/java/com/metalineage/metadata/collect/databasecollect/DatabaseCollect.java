@@ -1,9 +1,6 @@
 package com.metalineage.metadata.collect.databasecollect;
 
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import com.metalineage.metadata.collect.databasecollect.entity.MetadataEntity;
-import com.metalineage.metadata.collect.databasecollect.querysql.MysqlQuerySql;
 import com.metalineage.metadata.util.JdbcUtil;
 import com.metalineage.metadata.collect.databasecollect.entity.TableMetadataEntity;
 import lombok.Data;

@@ -108,6 +108,7 @@ public class HiveCollect extends DatabaseCollect {
             fieldMetadataEntitys.add(fieldMetadataEntity);
         }
         tableMetadata.setFields(fieldMetadataEntitys);
+        tableMetadata.setFieldNum(fieldMetadataEntitys.size());
     }
 
     //设置表的基本元数据信息包括更新时间、引擎、建表语句、备注等等
@@ -130,6 +131,7 @@ public class HiveCollect extends DatabaseCollect {
             }
             if (data_type != null && col_name.isEmpty() && data_type.contains("numPartitions")) {
                 tableMetadata.setPartitionCount(Integer.parseInt(comment.trim()));
+                tableMetadata.setIsPartition(true);
             }
             if (data_type != null && col_name.isEmpty() && data_type.contains("compression")) {
                 tableMetadata.setFileCompress(comment.trim());

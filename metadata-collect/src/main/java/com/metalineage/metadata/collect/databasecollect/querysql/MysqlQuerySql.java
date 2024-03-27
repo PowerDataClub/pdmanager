@@ -5,16 +5,11 @@ package com.metalineage.metadata.collect.databasecollect.querysql;
  */
 public class MysqlQuerySql {
 
-
-
     //已开发  获取数据库名的SQL语句
     private static final String DB_NAME_SQL = "show databases";
 
     //已开发 获取所有表名（指定数据库）
     private static final String TABLE_NAMES_SQL = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '%s'";
-
-    //已开发  获取表行数的SQL语句
-    private static final String COUNT_SQL = "select count(1) as recordCount from %s.%s";
 
     //表状态的SQL语句
     private static final String TABLE_STATUS_SQL = "show table status from %s like '%s'";
@@ -31,11 +26,6 @@ public class MysqlQuerySql {
     // 获取所有表名（指定数据库）
     public static String getTableNamesSql(String dbName) {
         return String.format(TABLE_NAMES_SQL, dbName);
-    }
-
-    // 获取表行数的SQL语句
-    public static String getCountSql(String dbName,String tableName) {
-        return String .format(COUNT_SQL, dbName,tableName);
     }
 
     // 获取表结构的SQL语句

@@ -29,23 +29,17 @@ public class TableMetadataEntity {
     //字段数量
     private Integer fieldNum;
 
-    //是否为分区表，0为否，1为是
-    private Integer isPartition;
+    //是否为分区表
+    private Boolean isPartition;
 
     //分区数量
     private Integer partitionCount;
 
-    //分区字段
-    private String partitionField;
-
     //是否分桶
-    private Integer isBucket;
+    private Boolean isBucket;
 
     //分桶数量
     private Integer bucketCount;
-
-    //分桶字段
-    private String bucketField;
 
     //表的创建时间
     private Date tableCreateTime;

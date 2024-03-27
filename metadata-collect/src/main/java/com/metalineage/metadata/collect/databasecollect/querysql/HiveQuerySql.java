@@ -5,12 +5,10 @@ package com.metalineage.metadata.collect.databasecollect.querysql;
  */
 public class HiveQuerySql {
 
-
-
-    //已开发  获取数据库名的SQL语句
+    //获取数据库名的SQL语句
     private static final String DB_NAME_SQL = "show databases";
 
-    //已开发 获取所有表名（指定数据库）
+    //获取所有表名（指定数据库）
     private static final String TABLE_NAMES_SQL = "SHOW TABLES IN `%s`";
 
     //表状态的SQL语句

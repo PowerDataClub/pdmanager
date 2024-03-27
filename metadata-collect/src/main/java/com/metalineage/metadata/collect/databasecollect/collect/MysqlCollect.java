@@ -113,24 +113,13 @@ public class MysqlCollect extends DatabaseCollect {
             tableMetadata.setEngine(jsonObject.getString("Engine"));
             tableMetadata.setFileFormat(jsonObject.getString("Row_format"));
             tableMetadata.setComment(jsonObject.getString("Comment"));
+            tableMetadata.setRecordCount(jsonObject.getLong("Rows"));
         }
 
         JSONArray resultSet2 = jdbcUtil.query(MysqlQuerySql.getCreateTableSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
         for (int i = 0; i < resultSet2.size(); i++) {
             JSONObject jsonObject = resultSet.getJSONObject(i);
             tableMetadata.setCreateTableSql(jsonObject.getString("Create_Table"));
-        }
-    }
-
-    /**
-     * 获取表的记录数
-     * @param tableMetadata 表元数据实体
-     */
-    public void setTableRecordCount(TableMetadataEntity tableMetadata) {
-        JSONArray resultSet = jdbcUtil.query(MysqlQuerySql.getCountSql(tableMetadata.getDbName(),tableMetadata.getTableName()));
-        for (int i = 0; i < resultSet.size(); i++) {
-            JSONObject jsonObject = resultSet.getJSONObject(i);
-            tableMetadata.setRecordCount(jsonObject.getLong("recordCount"));
         }
     }
 
